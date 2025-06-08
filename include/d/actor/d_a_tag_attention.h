@@ -25,18 +25,16 @@ namespace daTagAttention {
                 }
             }else{
                 // box collision check
-                s16 yRotAngle = current.angle.y;
-                if (yRotAngle != 0){
-                    if (current.angle.y){
-                        s16 yRotAngle = current.angle.y;
-                        f32 temp = 
-                            plyrToObjVec.x * cM_ssin(yRotAngle) +
-                            plyrToObjVec.z * cM_scos(yRotAngle);
-                        plyrToObjVec.x = 
-                            plyrToObjVec.x * cM_scos(yRotAngle) -
-                            plyrToObjVec.z * cM_ssin(yRotAngle);
-                        plyrToObjVec.z = temp;
-                    }
+                if (current.angle.y){
+                    s16 yRotAngle = current.angle.y;
+                    f32 x =
+                        plyrToObjVec.x * cM_scos(yRotAngle) -
+                        plyrToObjVec.z * cM_ssin(yRotAngle);
+                    f32 z =
+                        plyrToObjVec.x * cM_ssin(yRotAngle) +
+                        plyrToObjVec.z * cM_scos(yRotAngle);
+                    plyrToObjVec.x = x;
+                    plyrToObjVec.z = z;
                 }
 
                 if ((plyrToObjVec.x < -scale.x * 100.0f) || (plyrToObjVec.x > scale.x * 100.0f)){
@@ -56,26 +54,25 @@ namespace daTagAttention {
 
         int prm_get_Type() const 
         {
-            return daObj::PrmAbstract(this, PRM_1_W, PRM_1_S);
+            return daObj::PrmAbstract(this, PRM_TYPE_W, PRM_TYPE_S);
         }
 
         int prm_get_swSave() const 
         {
-            return daObj::PrmAbstract(this, PRM_2_W, PRM_2_S);
+            return daObj::PrmAbstract(this, PRM_SWSAVE_W, PRM_SWSAVE_S);
         }
     
         cPhs_State _create();
         bool _execute();
 
         enum Prm_e {
-            PRM_1_W = 0x02,
-            PRM_1_S = 0x08,
-            PRM_2_W = 0x08,
-            PRM_2_S = 0x00,
+            PRM_TYPE_W = 0x02,
+            PRM_TYPE_S = 0x08,
+            PRM_SWSAVE_W = 0x08,
+            PRM_SWSAVE_S = 0x00,
         };
 
     public:
-        /* Place member variables here */
         /* 0x290 */ bool m_b0x290;
         /* padding */ s8 mPad[8];
         /* 0x2B8 */ dCcD_Stts mStts;
